@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: doorstep-trust-network-api
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      # Update this after your Vercel frontend is deployed - comma-separate
+      # multiple origins if you keep a localhost entry for local dev too.
+      - key: ALLOWED_ORIGINS
+        value: http://localhost:5173
+      - key: PYTHON_VERSION
+        value: 3.11.9
+    # DATABASE_URL is intentionally omitted: without it the API falls back
+    # to a local SQLite file, which works but resets on every redeploy on
+    # Render's free tier. Add a Render Postgres instance and set
+    # DATABASE_URL for real persistence - see README "Persistence" section.
