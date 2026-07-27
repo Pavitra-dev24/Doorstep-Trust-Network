@@ -1,4 +1,4 @@
-# DoorStep Trust Network
+# DoorStep - Trust Network
 
 A community-verification layer on top of Google's open **Plus Codes**
 addressing system. Households register a Plus Code; neighbours who
