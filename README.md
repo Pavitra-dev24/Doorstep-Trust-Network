@@ -75,13 +75,6 @@ SQLite or Postgres
 
 Two independent deployments connected only by HTTPS and a CORS allowlist. No shared network, no shared filesystem.
 
-## Known gaps
-
-- **No real SMS or USSD gateway.** `/sms/simulate` mocks the reply text a Twilio or Exotel integration would send. Wiring a real gateway needs a paid account and a phone number. Swapping one in is a small, contained change (see `main.py`, `simulate_sms`).
-- **No auth.** Anyone can register a household or vouch. A real version needs phone OTP verification per vouch at minimum, to stop one person vouching under many names.
-- **No distance weighted trust.** A voucher could be weighted higher if their own registered address is nearby. The current model counts vouches only. Latitude and longitude are already decoded and stored on every household, so this is a natural next step.
-- **SQLite by default.** See Persistence below for what changes in production.
-
 ---
 
 ## Project structure
@@ -131,42 +124,3 @@ Visit `http://localhost:5173`. It points at `http://localhost:8000` via `.env.lo
 Full loop to try: register a household with a real Plus Code (generate one at [plus.codes](https://plus.codes) if needed), open its detail page, add a vouch, watch the trust seal update, open the printable marker, then send `TRUST <your code>` in the SMS simulator.
 
 ---
-
-## Deploy backend on Render
-
-1. Push the project to a GitHub repo.
-2. In the [Render Dashboard](https://dashboard.render.com), click **New > Blueprint** and connect the repo. Render detects `render.yaml` at the repo root and proposes one web service, `doorstep-trust-network-api`, rooted at `/backend`.
-3. Click **Deploy Blueprint**. First deploy takes a few minutes.
-4. Copy the service URL once live, for example `https://doorstep-trust-network-api-xxxx.onrender.com`.
-5. Check it: visit `https://<your-render-url>/health`. You should see `{"status":"ok"}`, and `/docs` for the interactive API.
-
-No `render.yaml`? Deploy manually: **New > Web Service**, connect the repo, Root Directory `backend`, Runtime `Python 3`, Build Command `pip install -r requirements.txt`, Start Command `uvicorn main:app --host 0.0.0.0 --port $PORT`.
-
-### Persistence
-
-By default the API uses a local SQLite file. Render's free tier web service disk is ephemeral. Every redeploy, including ones Render triggers automatically, wipes it, so registered households disappear.
-
-- For quick testing, re-seed a household before checking it again.
-- For real persistence, add a Render Postgres instance (dashboard: **New > PostgreSQL**, free tier available). Copy its Internal Connection String and set it as `DATABASE_URL` on the web service Environment tab. The backend reads `DATABASE_URL` automatically, no code changes needed.
-
----
-
-## Deploy frontend on Vercel
-
-1. In the [Vercel Dashboard](https://vercel.com/new), import the same GitHub repo.
-2. Set **Root Directory** to `frontend`. Vercel auto-detects Vite (Build Command `npm run build`, Output Directory `dist`). Leave those as is.
-3. Add an environment variable before deploying: `VITE_API_URL` = your Render URL, for example `https://doorstep-trust-network-api-xxxx.onrender.com`.
-4. Click **Deploy**. Vercel gives you a URL like `https://doorstep-trust-network.vercel.app`.
-
-## Connect them
-
-Backend and frontend are two separate deployments that talk over HTTPS and CORS. There is no shared network, so this step is what actually connects them.
-
-1. Copy your live Vercel URL.
-2. In the Render Dashboard, open the backend service, go to Environment, and add or edit `ALLOWED_ORIGINS` to include it:
-   ```
-   ALLOWED_ORIGINS=https://doorstep-trust-network.vercel.app,http://localhost:5173
-   ```
-3. Save. Render redeploys automatically. Once it's back up, open your Vercel URL and confirm the Home page's "Recently registered" list loads instead of erroring. That confirms the frontend is successfully calling the backend across origins.
-
-If it doesn't load, open the browser console. A CORS error there means step 2 hasn't finished redeploying yet, or the Vercel URL has a typo.
