@@ -58,7 +58,7 @@ export default function Home() {
             <h2>The gap this fills</h2>
             <p>
               Roughly 68% of India's population lives where addresses are
-              written as chains of landmarks, not street numbers — and
+              written as chains of landmarks, not street numbers, and
               unclear addresses are a documented factor in delayed
               emergency response. Plus Codes solve the coordinate problem,
               but there's no way for a stranger to know a code is current
@@ -77,7 +77,7 @@ export default function Home() {
             </div>
             <div className="stat">
               <span className="stat-num">SMS</span>
-              <span className="stat-label">fallback works even with no data connection — see the simulator</span>
+              <span className="stat-label">fallback works even with no data connection, see the simulator</span>
             </div>
           </div>
         </div>
@@ -92,12 +92,12 @@ export default function Home() {
             <div className="step">
               <span className="step-num">01</span>
               <h3>Register the doorstep</h3>
-              <p>A household adds their name, locality, and full Plus Code — decoded and validated instantly.</p>
+              <p>A household adds their name, locality, and full Plus Code, decoded and validated instantly.</p>
             </div>
             <div className="step">
               <span className="step-num">02</span>
               <h3>Neighbours vouch</h3>
-              <p>People who actually know the household — a neighbour, a kirana store owner — add a vouch.</p>
+              <p>People who actually know the household, a neighbour, a kirana store owner, add a vouch.</p>
             </div>
             <div className="step">
               <span className="step-num">03</span>
@@ -112,14 +112,14 @@ export default function Home() {
         <div className="container">
           <div className="section-head">
             <h2>Recently registered</h2>
-            <p>A live view of the demo database — try looking one of these up.</p>
+            <p>A live view of the demo database, try looking one of these up.</p>
           </div>
 
           {loadingList && <div className="spin" aria-label="Loading" />}
 
           {!loadingList && households.length === 0 && (
             <div className="empty-state">
-              No households registered yet. Be the first — register a home to get started.
+              No households registered yet. Be the first, register a home to get started.
             </div>
           )}
 

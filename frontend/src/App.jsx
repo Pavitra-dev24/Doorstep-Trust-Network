@@ -24,8 +24,8 @@ export default function App() {
       <footer className="page-footer">
         <div className="container">
           <p>
-            DoorStep Trust Network — a solo portfolio prototype built on Google's open
-            Plus Codes format. Not affiliated with Google.
+            DoorStep Trust Network, Built on Google's openPlus Codes format.
+            Not affiliated with Google.
           </p>
         </div>
       </footer>
