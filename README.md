@@ -1,7 +1,6 @@
 # DoorStep — Trust Network
 
 [![Live App](https://img.shields.io/badge/Live-App-2ea44f?style=for-the-badge)](https://doorstep-trust-network.vercel.app/)
-
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square&logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
 ![React](https://img.shields.io/badge/React-19-20232A?style=flat-square&logo=react&logoColor=61DAFB)
